@@ -1823,39 +1823,41 @@ public class GatewayMethodImpl extends OutBoundHandler implements GatewayMethod 
         //智慧管廊和3D平台数据交互
         if (deviceTokenRelation != null) {
             JsonObject JsonWebSocket = new JsonObject();
+
             switch (deviceTokenRelation.getUuid()) {
                 case "7b99a6f0-90d2-11e9-b21a-2fa071b4c282":  //烟雾报警器
                     JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
                     JsonWebSocket.addProperty("location", "pipeline1");
                     JsonWebSocket.addProperty("type", "smoke");
+                    JsonWebSocket.addProperty("siteId", "11");
                     System.out.println(data.get("alarm").getAsInt());
                     if (data.get("alarm").getAsInt() == 0 && data.get("battery").getAsInt() == 0) { //无烟，电池电压正常
                         JsonWebSocket.addProperty("state", 0);
                     } else {
                         JsonWebSocket.addProperty("state", 1);   //不正常
                     }
-                    String jsonStr = JsonWebSocket.toString();
-                    System.out.println("jsonStr = " + jsonStr);
-                    myWebsocketServer.sendAllMessage(jsonStr);
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
                     break;
                 case "11c07920-df38-11e9-a94d-bff39a7643f2":  //烟雾报警器
                     JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
                     JsonWebSocket.addProperty("location", "pipeline1");
                     JsonWebSocket.addProperty("type", "smoke");
+                    JsonWebSocket.addProperty("siteId", "11");
                     System.out.println(data.get("alarm").getAsInt());
                     if (data.get("alarm").getAsInt() == 0 && data.get("battery").getAsInt() == 0) { //无烟，电池电压正常
                         JsonWebSocket.addProperty("state", 0);
                     } else {
                         JsonWebSocket.addProperty("state", 1);   //不正常
                     }
-                    String jsonStr0 = JsonWebSocket.toString();
-                    System.out.println("jsonStr = " + jsonStr0);
-                    myWebsocketServer.sendAllMessage(jsonStr0);
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
                     break;
                 case "1bfca680-9c75-11e9-9dcf-b55ae51a103e": //温湿度传感器
                     JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
                     JsonWebSocket.addProperty("location", "pipeline2");
                     JsonWebSocket.addProperty("type", "humidity");
+                    JsonWebSocket.addProperty("siteId", "11");
                     Double temperature = data.get("temperature").getAsDouble();
                     JsonWebSocket.addProperty("temperature", temperature);
                     Double humidity = data.get("humidity").getAsDouble();
@@ -1867,35 +1869,62 @@ public class GatewayMethodImpl extends OutBoundHandler implements GatewayMethod 
                         JsonWebSocket.addProperty("state", 1);
                     }
 
-                    String jsonStr2 = JsonWebSocket.toString();
-                    System.out.println("jsonStr = " + jsonStr2);
-                    myWebsocketServer.sendAllMessage(jsonStr2);
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
                     break;
                 case "f6289960-3b02-11e9-8fc2-67fbc94ac784"://人体红外
                     JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
                     JsonWebSocket.addProperty("location", "pipeline3");
                     JsonWebSocket.addProperty("type", "infrared");
+                    JsonWebSocket.addProperty("siteId", "11");
                     if (data.get("alarm").getAsInt() == 0 && data.get("battery").getAsInt() == 0) { //无人，电池电压正常
                         JsonWebSocket.addProperty("state", 0);
                     } else {
                         JsonWebSocket.addProperty("state", 1);
                     }
-                    String jsonStr3 = JsonWebSocket.toString();
-                    System.out.println("jsonStr = " + jsonStr3);
-                    myWebsocketServer.sendAllMessage(jsonStr3);
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
                     break;
                 case "311057b0-90d1-11e9-b21a-2fa071b4c282"://水浸传感器
                     JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
                     JsonWebSocket.addProperty("location", "pipeline4");
                     JsonWebSocket.addProperty("type", "water");
+                    JsonWebSocket.addProperty("siteId", "11");
                     if (data.get("alarm").getAsInt() == 0 && data.get("battery").getAsInt() == 0) { //无水，电池电压正常
                         JsonWebSocket.addProperty("state", 0);
                     } else {
                         JsonWebSocket.addProperty("state", 1);
                     }
-                    String jsonStr4 = JsonWebSocket.toString();
-                    System.out.println("jsonStr = " + jsonStr4);
-                    myWebsocketServer.sendAllMessage(jsonStr4);
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
+                    break;
+                case "f6159e40-90d0-11e9-b21a-2fa071b4c282" :  //门磁
+                    JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
+                    JsonWebSocket.addProperty("location", "door1");
+                    JsonWebSocket.addProperty("type", "doorMagnet");
+                    JsonWebSocket.addProperty("siteId", "11");
+                    if (data.get("alarm").getAsInt() == 0 ) {                //关门
+                        JsonWebSocket.addProperty("state", 0);
+                    } else {                                                 //开门
+                        JsonWebSocket.addProperty("state", 1);
+                    }
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
+                    break;
+                case "cccc7380-cbde-11e9-a40d-2765042baad2" :  //电磁阀
+                    JsonWebSocket.addProperty("timestamp", System.currentTimeMillis());
+                    JsonWebSocket.addProperty("location", "switch1");
+                    JsonWebSocket.addProperty("type", "switch");
+                    JsonWebSocket.addProperty("siteId", "11");
+                    if (data.get("online").getAsInt() == 0 ) {                //未入网，电磁阀关0
+                        JsonWebSocket.addProperty("state", 0);
+                    } else {                                                   //入网， 电磁阀开1
+                        JsonWebSocket.addProperty("state", 1);
+                    }
+                    System.out.println(JsonWebSocket.toString());
+                    myWebsocketServer.sendAllMessage(JsonWebSocket.toString());
+                    break;
+                default:
                     break;
             }
 

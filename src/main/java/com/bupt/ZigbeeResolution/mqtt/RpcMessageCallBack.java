@@ -343,6 +343,9 @@ public class RpcMessageCallBack implements MqttCallback{
 //							if (!learnRes.hasResult()){
 //								return;
 //							}
+
+
+
 							Key k = irService.findAKey(panelId,key);
 							if (k != null){
 								irService.updateKeyName(k.getId(), key_name);

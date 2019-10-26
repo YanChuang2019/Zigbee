@@ -490,7 +490,8 @@ public class DataService {
                 gatewayMethod.setGroupName_CallBack(newGroupName);
                 break;
 
-            case 0x70:
+            case 0x70 :
+                case 0x72:
                 //TODO 设备主动上报（目前只做实验室温湿度传感器和PM2.5传感器） & 红外设备响应
                 Double temperature;
                 Integer humidity;
@@ -766,12 +767,13 @@ public class DataService {
                         for (int i = 0; i < Integer.parseInt(String.valueOf(bytes[7])); i++) {
                             if (byte2HexStr(Arrays.copyOfRange(bytes, 8 + i * 5, 10 + i * 5)).equals("D0F0")) {
                                 if (bytes[10 + i * 5] == 0x20) {
-                                    if (Integer.parseInt(String.valueOf(bytes[11 + i * 5])) == 3) {
+                                    if (Integer.parseInt(String.valueOf(bytes[11 + i * 5])) == 3) {  //在网
                                         onlineStatus = 1D;
                                     } else {
                                         onlineStatus = 0D;
                                     }
                                     data.addProperty("online", onlineStatus);
+                                    System.out.println("onlineStatus = " + onlineStatus);
                                 }
                             }
                         }
@@ -898,6 +900,7 @@ public class DataService {
                 }
                 gatewayMethod.data_CallBack(shortAddress, endPoint, data, deviceTokenRelationService, sceneService, sceneRelationService, gatewayGroupService);
                 break;
+
         }
 
         instance.removeRequestId(shortAddress+endPoint);
@@ -1031,9 +1034,6 @@ public class DataService {
                 break;
             case "0101":
                 type = "dimmableLight";
-                break;
-            case "0201":
-                type = "colourDimmableLight";
                 break;
             case "0601":
                 type = "lightSensor";
